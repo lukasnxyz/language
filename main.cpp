@@ -1,10 +1,14 @@
 #include "main.hpp"
 
+#include <iostream>
 #include <string>
 #include <fstream>
 #include <sstream>
+#include <vector>
 
 #include "lexer.hpp"
+
+bool Main::had_error = false;
 
 int main(int argc, char **argv) {
   if (argc > 1) {
@@ -22,7 +26,7 @@ int main(int argc, char **argv) {
 // TODO: return exit code?
 void Main::run(std::string source) {
   Scanner scanner(source);
-  std::vector<Token> tokens = scanner.scan_tokens();
+  //std::vector<Token> tokens = scanner.scan_tokens();
 
   // for now just print tokens
 }
@@ -49,7 +53,7 @@ void Main::run_prompt() {
     if (line.empty()) {
       break;
     }
-    Main:run(line);
+    run(line);
     had_error = false;
   }
 }

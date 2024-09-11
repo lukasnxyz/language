@@ -2,6 +2,7 @@
 #define _LEXER_HPP_
 
 #include <iostream>
+#include <vector>
 
 #include "utils.hpp"
 
@@ -41,13 +42,10 @@ public:
 	int get_line() { return line.get(); }
 };
 
-std::ostream& operator<< (std::ostream& os, const Token& t) { 
-	return os << t.get_type() << " " << t.get_lexeme() << " " << t.get_literal();
-}
-
 class Scanner {
 private:
-	std::string source;
+	Final<std::string> source;
+	std::vector<Token> tokens;
 
 public:
 	Scanner(std::string source) : source(source) {}
