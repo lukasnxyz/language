@@ -4,12 +4,14 @@
 #include <fstream>
 #include <sstream>
 
+#include "lexer.hpp"
+
 int main(int argc, char **argv) {
   if (argc > 1) {
     std::cout << "Usage: main [script]" << std::endl;
     return 1;
   } else if (argc == 1) {
-    Main::run_file(argv[0]);
+    return Main::run_file(argv[0]);
   } else {
     Main::run_prompt();
   }
@@ -17,20 +19,26 @@ int main(int argc, char **argv) {
   return 0;
 }
 
+// TODO: return exit code?
 void Main::run(std::string source) {
-  // Scanner
-  // Array of tokens
-
+  Scanner scanner(source);
+  std::vector<Token> tokens = scanner.scan_tokens();
 
   // for now just print tokens
 }
 
-void Main::run_file(std::string path) {
+int Main::run_file(std::string path) {
   std::ifstream f(path);
   std::stringstream buffer;
   buffer << f.rdbuf();
   std::string src_str = buffer.str();
   run(src_str);
+
+  if (had_error) {
+    return 2;
+  } else {
+    return 0;
+  }
 }
 
 void Main::run_prompt() {
@@ -42,5 +50,15 @@ void Main::run_prompt() {
       break;
     }
     Main:run(line);
+    had_error = false;
   }
+}
+
+void Main::error(int line, std::string msg) {
+  report(line, "", msg);
+}
+
+void Main::report(int line, std::string where, std::string msg) {
+  std::cout << "[line " << line << "] Error" << where << ": " << msg << std::endl;
+  had_error = true;
 }

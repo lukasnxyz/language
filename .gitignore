@@ -4,4 +4,7 @@
 !*.*
 # unignore all dirs
 !*/
-### Above combination will ignore all files without extension ###
+### above combination will ignore all files without extension ###
+
+# msc
+.vscode/
