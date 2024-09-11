@@ -1,9 +1,9 @@
-#ifndef _RUN_HPP_
-#define _RUN_HPP_
+#ifndef _LANG_HPP_
+#define _LANG_HPP_
 
 #include <iostream>
 
-class Main {
+class Lang {
 private:
   static bool had_error;
   static void report(int line, std::string where, std::string msg);
@@ -15,4 +15,4 @@ public:
   static void error(int line, std::string msg);
 };
 
-#endif // _RUN_HPP_
+#endif // _LANG_HPP_
