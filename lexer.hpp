@@ -4,8 +4,6 @@
 #include <iostream>
 #include <vector>
 
-#include "utils.hpp"
-
 enum TokenType {
 	LEFT_PAREN, RIGHT_PAREN, LEFT_BRACE, RIGHT_BRACE,
 	COMMA, DOT, MINUS, PLUS, SEMICOLON, SLASH, STAR,
@@ -25,10 +23,10 @@ enum TokenType {
 
 class Token {
 private:
-	Final<TokenType> type;
-	Final<std::string> lexeme;
+	TokenType type;
+	std::string lexeme;
 	//Final<Object> literal;
-	Final<int> line;
+	int line;
 
 public:
 	Token(TokenType type, std::string lexeme, int line) : 
@@ -36,16 +34,25 @@ public:
 
 	friend std::ostream& operator<< (std::ostream& os, const Token& t);
 
-	TokenType get_type() { return type.get(); }
-	std::string get_lexeme() { return lexeme.get(); }
+	TokenType get_type() { return type; }
+	std::string get_lexeme() { return lexeme; }
 	// obj get_literal() { return literal.get(); }
-	int get_line() { return line.get(); }
+	int get_line() { return line; }
 };
 
 class Scanner {
 private:
-	Final<std::string> source;
+	std::string source;
 	std::vector<Token> tokens;
+	int start = 0;
+	int current = 0;
+	int line = 1;
+
+	bool is_at_end() { return current >= source.size(); }
+	void scan_token();
+	char advance() { return source[current++]; }
+	void add_token(TokenType type) { add_token(type, null); }
+	/* void add_token(TokenType type, Object literal)*/
 
 public:
 	Scanner(std::string source) : source(source) {}
