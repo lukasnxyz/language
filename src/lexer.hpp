@@ -44,18 +44,18 @@ class Scanner {
 private:
 	std::string source;
 	std::vector<Token> tokens;
-	int start = 0;
-	int current = 0;
-	int line = 1;
+	int start;
+	int current;
+	int line;
 
 	bool is_at_end() { return current >= source.size(); }
 	void scan_token();
 	char advance() { return source[current++]; }
-	void add_token(TokenType type) { add_token(type, null); }
-	/* void add_token(TokenType type, Object literal)*/
+	//void add_token(TokenType type) { add_token(type, null); }
+	void add_token(TokenType type); // Object literal
 
 public:
-	Scanner(std::string source) : source(source) {}
+	Scanner(std::string source) : source(source), start(0), current(0), line(1) {}
 	std::vector<Token> scan_tokens(); 
 };
 

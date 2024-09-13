@@ -6,6 +6,7 @@
 !*/
 ### above combination will ignore all files without extension ###
 
+objs/
 *.o
 
 # msc
