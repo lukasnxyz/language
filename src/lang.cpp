@@ -12,9 +12,12 @@ bool Lang::had_error = false;
 // TODO: return exit code?
 void Lang::run(std::string source) {
   Scanner scanner(source);
-  //std::vector<Token> tokens = scanner.scan_tokens();
+  std::vector<Token> tokens = scanner.scan_tokens();
 
   // for now just print tokens
+	for (auto& token : tokens) {
+		std::cout << token << std::endl;
+	}
 }
 
 int Lang::run_file(std::string path) {
