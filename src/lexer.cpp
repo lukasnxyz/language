@@ -131,6 +131,7 @@ void Scanner::number(void) {
 		}
 	}
 
+  // add token needs to take string or double or etc.
 	add_token(TokenType::NUMBER, std::stod(source.substr(start, current)));
 }
 
