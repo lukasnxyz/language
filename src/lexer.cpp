@@ -68,6 +68,8 @@ void Scanner::scan_token(void) {
 		default: 
 			if (isdigit(c)) {
 				number();
+      } else if (isalpha(c)) {
+        identifier();
 			} else {
 				Lang::error(line, "Unexpected character."); 
 			}
@@ -75,7 +77,7 @@ void Scanner::scan_token(void) {
 	}
 }
 
-void Scanner::add_token(TokenType type, std::string literal) { 
+void Scanner::add_token(TokenType type, literal_variant literal) { 
 	std::string txt = source.substr(start, current);
 	tokens.push_back(Token(type, txt, literal, line));
 }
@@ -131,7 +133,6 @@ void Scanner::number(void) {
 		}
 	}
 
-  // add token needs to take string or double or etc.
 	add_token(TokenType::NUMBER, std::stod(source.substr(start, current)));
 }
 
@@ -142,7 +143,22 @@ char Scanner::peek_next(void) {
 	return source[current+1];
 }
 
-std::ostream& operator<< (std::ostream& os, Token& t) { // const Token& t
+void Scanner::identifier(void) {
+  while (isalnum(peek())) {
+    advance();
+  }
+
+  std::string text  = source.substr(start, current);
+  TokenType type;
+  try {
+    type = keywords.at(text);
+  } catch (const std::out_of_range& e) {
+    type = TokenType::IDENTIFIER;
+  }
+  add_token(type);
+}
+
+std::ostream& operator<<(std::ostream& os, Token& t) { // const Token& t
 	//return os << t.get_type() << " " << t.get_lexeme() << " " << t.get_literal();
 	return os << t.get_type() << " " << t.get_lexeme();
 }
