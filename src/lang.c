@@ -1,13 +1,11 @@
 #include "lang.h"
-
 #include <stdio.h>
 #include <stdlib.h>
-
 #include "scanner.h"
 
 static bool had_error = false;
 
-static void lang_run(char *source) {
+static void lang_run(const char *source) {
   struct Scanner *scanner = scanner_construct(source);
   struct Token *tokens = scanner_scan_tokens(scanner);
 
@@ -17,7 +15,7 @@ static void lang_run(char *source) {
   }
 }
 
-int lang_run_file(char *path) {
+int lang_run_file(const char *path) {
   FILE *f = fopen(path, "r");
   if (f == NULL) {
     fprintf(stderr, "failed to allocate memory!");
@@ -62,11 +60,11 @@ void lang_run_prompt(void) {
   }
 }
 
-void lang_error(int line, char *msg) {
+void lang_error(const int line, const char *msg) {
   lang_report(line, "", msg);
 }
 
-void lang_report(int line, char *where, char *msg) {
+void lang_report(const int line, const char *where, const char *msg) {
   fprintf(stderr, "'[line %d]' Error %s: %s\n", line, where, msg);
   had_error = true;
 }

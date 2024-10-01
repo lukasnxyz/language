@@ -4,10 +4,10 @@
 #include "utils.h"
 
 //void lang_run(char *source);
-int lang_run_file(char *path);
+int lang_run_file(const char *path);
 void lang_run_prompt(void);
 
-void lang_error(int line, char *msg);
-void lang_report(int line, char *where, char *msg);
+void lang_error(const int line, const char *msg);
+void lang_report(const int line, const char *where, const char *msg);
 
 #endif /* _LANG_H_ */
