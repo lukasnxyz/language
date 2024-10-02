@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-struct Token *token_construct(const enum TokenType type, const char *lexeme, const size_t line) {
+struct Token *token_construct(const enum TokenType type, char *lexeme, const size_t line) {
   struct Token *token = (struct Token *)malloc(sizeof(struct Token));
   if (token == NULL) {
     fprintf(stderr, "error allocating memory!");
@@ -21,7 +21,7 @@ char *token_to_string(struct Token *token) {
   return token->lexeme;
 }
 
-struct Scanner *scanner_construct(const char *source) {
+struct Scanner *scanner_construct(char *source) {
   struct Scanner *scanner = (struct Scanner *)malloc(sizeof(struct Scanner));
   if (scanner == NULL) {
     fprintf(stderr, "error allocating memory!");
@@ -45,7 +45,7 @@ static int scanner_is_at_end(struct Scanner *scanner) {
 }
 
 struct Token *scanner_scan_tokens(struct Scanner *scanner) {
-  while (!scanner_is_at_end) {
+  while (!scanner_is_at_end(scanner)) {
     scanner->start = scanner->current;
     scanner_scan_token(scanner);
   }
@@ -54,18 +54,18 @@ struct Token *scanner_scan_tokens(struct Scanner *scanner) {
 }
 
 void scanner_scan_token(struct Scanner *scanner) {
-  char c = advance();
+  char c = scanner_advance(scanner);
   switch (c) {
-    case '(': scanner_add_token(LEFT_PAREN); break;
-    case ')': scanner_add_token(RIGHT_PAREN); break;
-    case '{': scanner_add_token(LEFT_BRACE); break;
-    case '}': scanner_add_token(RIGHT_BRACE); break;
-    case ',': scanner_add_token(COMMA); break;
-    case '.': scanner_add_token(DOT); break;
-    case '-': scanner_add_token(MINUS); break;
-    case '+': scanner_add_token(PLUS); break;
-    case ';': scanner_add_token(SEMICOLON); break;
-    case '*': scanner_add_token(STAR); break; 
+    case '(': scanner_add_token(scanner, LEFT_PAREN); break;
+    case ')': scanner_add_token(scanner, RIGHT_PAREN); break;
+    case '{': scanner_add_token(scanner, LEFT_BRACE); break;
+    case '}': scanner_add_token(scanner, RIGHT_BRACE); break;
+    case ',': scanner_add_token(scanner, COMMA); break;
+    case '.': scanner_add_token(scanner, DOT); break;
+    case '-': scanner_add_token(scanner, MINUS); break;
+    case '+': scanner_add_token(scanner, PLUS); break;
+    case ';': scanner_add_token(scanner, SEMICOLON); break;
+    case '*': scanner_add_token(scanner, STAR); break; 
   }
 }
 
@@ -74,8 +74,12 @@ char scanner_advance(struct Scanner *scanner) {
 }
 
 void scanner_add_token(struct Scanner *scanner, const enum TokenType type) {
-  // char *text = scanner
+  char *text = scanner_substring(scanner);
+  struct Token *token = token_construct(type, text, scanner->line); // check NULL
+  scanner_append_tokens(scanner, token);
 }
+
+//void scanner_add_token_literal(const enum TokenType type, const literal) {}
 
 void scanner_append_tokens(struct Scanner *scanner, struct Token *token) {
   if (scanner->tokens == NULL) {
@@ -92,4 +96,8 @@ void scanner_append_tokens(struct Scanner *scanner, struct Token *token) {
   scanner->num_tokens++;
 
   scanner->tokens[source->num_tokens] = token;
+}
+
+char *scanner_substring(struct Scanner *scanner) {
+  // get sub string from start to current
 }

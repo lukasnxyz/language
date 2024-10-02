@@ -27,7 +27,7 @@ struct Token {
   size_t line;
 };
 
-struct Token *token_construct(const enum TokenType type, const char *lexeme, const size_t line);
+struct Token *token_construct(const enum TokenType type, char *lexeme, const size_t line);
 char *token_to_string(struct Token *token);
 
 struct Scanner {
@@ -41,7 +41,7 @@ struct Scanner {
   struct Token *tokens; // array
 };
 
-struct Scanner *scanner_construct(const char *source);
+struct Scanner *scanner_construct(char *source);
 //int scanner_is_at_end(struct Scanner *scanner);
 struct Token *scanner_scan_tokens(struct Scanner *scanner);
 void scanner_scan_token(struct Scanner *scanner);
@@ -49,5 +49,9 @@ char scanner_advance(struct Scanner *scanner);
 void scanner_add_token(struct Scanner *scanner, const enum TokenType type);
 //void scanner_add_token_literal(const enum TokenType type, const literal);
 void scanner_append_tokens(struct Scanner *scanner, struct Token *token);
+char *scanner_substring(struct Scanner *scanner);
+
+// void token_free(struct Token *token);
+// void scanner_free(struct Scanner *scanner);
 
 #endif /* _SCANNER_H_ */

@@ -1,8 +1,6 @@
 #ifndef _LANG_H_
 #define _LANG_H_
 
-#include "utils.h"
-
 //void lang_run(char *source);
 int lang_run_file(const char *path);
 void lang_run_prompt(void);
