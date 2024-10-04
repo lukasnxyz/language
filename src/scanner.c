@@ -35,7 +35,7 @@ struct Scanner *scanner_construct(char *source) {
   scanner->line = 0;
 
   scanner->num_tokens = 0;
-  scanner->tokens = NULL;
+  scanner->tokens = (struct Token **)malloc(sizeof(struct Token *));
 
   return scanner;
 }
@@ -44,13 +44,13 @@ static int scanner_is_at_end(struct Scanner *scanner) {
   return scanner->current >= strlen(scanner->source);
 }
 
-struct Token *scanner_scan_tokens(struct Scanner *scanner) {
+void scanner_scan_tokens(struct Scanner *scanner) {
   while (!scanner_is_at_end(scanner)) {
     scanner->start = scanner->current;
     scanner_scan_token(scanner);
   }
-  // scanner->tokens append new Token(EOF, "", null, line);
-  return scanner->tokens;
+  //struct Token *n_token = token_construct(EOF, "", scanner->current);
+  //scanner_append_tokens(scanner, n_token);
 }
 
 void scanner_scan_token(struct Scanner *scanner) {
@@ -73,31 +73,41 @@ char scanner_advance(struct Scanner *scanner) {
   return scanner->source[scanner->current++];
 }
 
+//void scanner_add_token_literal(const enum TokenType type, const literal) {}
 void scanner_add_token(struct Scanner *scanner, const enum TokenType type) {
   char *text = scanner_substring(scanner);
   struct Token *token = token_construct(type, text, scanner->line); // check NULL
   scanner_append_tokens(scanner, token);
 }
 
-//void scanner_add_token_literal(const enum TokenType type, const literal) {}
-
 void scanner_append_tokens(struct Scanner *scanner, struct Token *token) {
-  if (scanner->tokens == NULL) {
-    scanner->tokens = (struct Token *)malloc(sizeof(struct Token) * 1);
-    // check fail
-  } else {
-    scanner->tokens = (struct Token *)realloc(sizeof(struct Token) * (source->num_tokens+1));
-    // check fail
-  }
+  scanner->tokens = (struct Token **)realloc(scanner->tokens, (scanner->num_tokens + 1) * sizeof(struct Token));
+  // check fail
+ 
   if (scanner->tokens == NULL) {
     fprintf(stderr, "memory allocation failed!");
     // return 2;
   }
   scanner->num_tokens++;
 
-  scanner->tokens[source->num_tokens] = token;
+  scanner->tokens[scanner->num_tokens] = token;
 }
 
+// TODO: get sub string from start to current
 char *scanner_substring(struct Scanner *scanner) {
-  // get sub string from start to current
+  return NULL;
+}
+
+void token_free(struct Token *token) {
+  free(token->lexeme);
+  free(token);
+}
+
+void scanner_free(struct Scanner *scanner) {
+  //free(scanner->source);
+  for (size_t i = 0; i < scanner->num_tokens; ++i) {
+    token_free(scanner->tokens[i]);
+  }
+  free(scanner->tokens);
+  free(scanner);
 }

@@ -7,12 +7,15 @@ static size_t had_error = 0;
 
 static void lang_run(char *source) {
   struct Scanner *scanner = scanner_construct(source);
-  struct Token *tokens = scanner_scan_tokens(scanner);
+  scanner_scan_tokens(scanner);
 
   /* for now just print tokens */
-  for (size_t i = 0; i < scanner->num_tokens; i++) {
-    printf("token: %s\n", tokens[i].lexeme);
+  for (size_t i = 0; i < scanner->num_tokens; ++i) {
+    printf("token: %s\n", scanner->tokens[i]->lexeme);
   }
+
+  printf("%zd\n", scanner->num_tokens);
+  scanner_free(scanner);
 }
 
 int lang_run_file(const char *path) {
@@ -41,6 +44,7 @@ int lang_run_file(const char *path) {
   lang_run(src_str);
 
   free(src_str);
+
   if (had_error) {
     return 1;
   } 

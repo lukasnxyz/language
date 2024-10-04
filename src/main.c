@@ -1,6 +1,11 @@
 #include <stdio.h>
-
 #include "lang.h"
+
+/*
+ * Todo: 
+ * - remove casts from mallocs
+ * - star on type not name
+  */
 
 int main(int argc, char *argv[]) {
   if (argc > 2) {
