@@ -52,7 +52,7 @@ private:
 	size_t current;
 	size_t line;
 
-  static const std::unordered_map<std::string, TokenType> keywords;
+  //static const std::unordered_map<std::string, TokenType> keywords;
 
 	bool is_at_end(void) { return current >= source.size(); }
 	void scan_token(void);
@@ -70,7 +70,7 @@ public:
 	Scanner(std::string source) : source(source), start(0), current(0), line(1) {}
 	std::vector<Token> scan_tokens(void); 
 
-  const std::unordered_map<std::string, TokenType> Scanner::keywords = {
+  const std::unordered_map<std::string, TokenType> keywords = {
     {"and",    TokenType::AND},
     {"class",  TokenType::CLASS},
     {"else",   TokenType::ELSE},

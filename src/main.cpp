@@ -7,7 +7,7 @@ int main(int argc, char **argv) {
     std::cout << "Usage: main [script]" << std::endl;
     return 1;
   } else if (argc == 2) {
-    return Lang::run_file(argv[0]);
+    return Lang::run_file(argv[1]);
   } else {
     Lang::run_prompt();
   }

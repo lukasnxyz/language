@@ -3,7 +3,6 @@
 #include <iostream>
 #include <string>
 #include <fstream>
-#include <sstream>
 
 #include "scanner.hpp"
 
@@ -22,10 +21,14 @@ void Lang::run(std::string source) {
 
 int Lang::run_file(std::string path) {
   std::ifstream f(path);
-  std::stringstream buffer;
-  buffer << f.rdbuf();
-  std::string src_str = buffer.str();
-  run(src_str);
+  std::string str;
+  std::string src;
+  while (std::getline(f, str)) {
+    src += str;
+    src.push_back('\n');
+  }  
+
+  run(src);
 
   if (had_error) {
     return 2;

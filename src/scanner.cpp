@@ -1,5 +1,6 @@
 #include "scanner.hpp"
 
+#include <iostream>
 #include <vector>
 #include <cctype>
 
@@ -149,7 +150,7 @@ void Scanner::identifier(void) {
 
   std::string text  = source.substr(start, current);
   TokenType type;
-  try {
+  try { // ERROR
     type = keywords.at(text);
   } catch (const std::out_of_range& e) {
     type = TokenType::IDENTIFIER;
